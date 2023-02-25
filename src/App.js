@@ -1,3 +1,4 @@
+import "./App.css";
 import React, { useState, useEffect } from "react";
 import StarButton from "./Components/StarButton";
 import "./App.css";
@@ -8,10 +9,9 @@ function App() {
   const [filter, setFilter] = useState("All");
   const [trash, setTrash] = useState([]);
   const [starred, setStarred] = useState([]);
-  
-  //const [flag,setFlag]=useState(0);
-  const [flag1,setFlag1]=useState(0);
-  const [flag2,setFlag2]=useState(0);
+  const [flag1, setFlag1] = useState(false);
+  const [flag2, setFlag2] = useState(false);
+
   useEffect(() => {
     fetch("https://mocki.io/v1/d1f16339-9aec-4696-b302-7fd0cb0db28b")
       .then((response) => response.json())
@@ -25,9 +25,6 @@ function App() {
   const handleFilter = (event) => {
     setFilter(event.target.value);
   };
-
-  
- 
 
   const filteredUserData = userData.filter((user) => {
     if (filter === "All") {
@@ -45,51 +42,51 @@ function App() {
       lastName.toLowerCase().includes(searchText.toLowerCase())
     );
   });
-  // const handleShowStarred = () => {
-  //   setShowStarred(!showStarred);
-  // };
+  const starClicked = () => {
+    setFlag1(false);
+    setFlag2(true);
+  };
+
+  const deleteClicked = () => {
+    setFlag1(true);
+    setFlag2(false);
+  };
+
   const handleStar = (id) => {
     const starredUser = userData.find((user) => user.id === id);
     setStarred([...starred, starredUser]);
   };
+
+  const handleDelete = (id) => {
+    const deletedUser = userData.find((user) => user.id === id);
+    const newUserData = userData.filter((user) => user.id !== id);
+    setUserData(newUserData);
+    setTrash([...trash, deletedUser]);
+  };
+
   const starredList = starred.map((user) => (
+    <div class="hiddendata">
+    <ul key={user.id}>
+      {user.id} {user.first_name} {user.last_name} {user.email} {user.gender}{" "}
+      {user.ip_address}
+    </ul>
+    </div>
+  ));
+
+  const deleteList = trash.map((user) => (
+    <div class="hiddendata">
     <li key={user.id}>
       {user.id} {user.first_name} {user.last_name} {user.email} {user.gender}{" "}
       {user.ip_address}
     </li>
+    </div>
   ));
-  
-  var x=0;
- const starClicked=()=>{
-  x++;
-  setFlag2(x%2);
- }
- const handleDelete = (id) => {
-  const deletedUser = userData.find((user) => user.id === id);
-  const newUserData = userData.filter((user) => user.id !== id);
-  setUserData(newUserData);
-  setTrash([...trash, deletedUser]);
-};
-// const handleShowDeletedata = () => {
-//   setShowDeletedata(!showDeletedata);
-// };
-const deleteList = trash.map((user) => (
-  <li key={user.id}>
-    {user.id} {user.first_name} {user.last_name} {user.email} {user.gender}{" "}
-    {user.ip_address}
-  </li>
-));
- var y=0;
- const deleteClicked=()=>
- {
-  y++;
-  setFlag1(y%2);
- }
+
   return (
     <div className="App">
       <h1 className="appname">User Data Table</h1>
       <header className="header">
-        <button className="home">HOME</button>
+        <button className="home" id="btn">HOME</button>
         <div className="filters" id="dropdown">
           <select value={filter} onChange={handleFilter}>
             <option value="All">All</option>
@@ -97,17 +94,12 @@ const deleteList = trash.map((user) => (
             <option value="Male">Male</option>
           </select>
         </div>
-        <div className="starred">
-          <div>
-            {/* <button onClick={handleShowStarred}>Show Starred</button>
-            {showStarred && <ul className="starredList">{starredList}</ul>} */}
-            <button onClick={starClicked}>Show Starred</button>
-          </div>
-          <div className="delete">
-            {/* <button onClick={handleShowDeletedata}>Trash </button>
-            {showDeletedata && <ul className="deletelist">{deleteList}</ul>} */}
-            <button onClick={deleteClicked}>Trash</button>
-          </div>
+
+        <div>
+          <button id="btn" onClick={starClicked}>Starred</button>
+        </div>
+        <div className="delete">
+          <button id="btn" onClick={deleteClicked}>Trash</button>
         </div>
       </header>
       <div className="search">
@@ -119,62 +111,55 @@ const deleteList = trash.map((user) => (
           onChange={handleSearch}
         />
       </div>
-     {(!flag1 && !flag2)?
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>ID</th>
-            <th>First_Name</th>
-            <th>Last_Name</th>
-            <th>Email</th>
-            <th>Gender</th>
-            <th>IP Address</th>
-            <th>DELETE</th>
-          </tr>
-        </thead>
-        
-        <tbody>
-          {searchedUserData.map((user, index) => (
-            <tr key={index}>
-              <td>
-                <button onClick={() => handleStar(user.id)}>
-                  {" "}
-                  <StarButton />
-                </button>
-              </td>
-              <td>{index + 1}</td>
-              <td>{user.first_name}</td>
-              <td>{user.last_name}</td>
-              <td>{user.email}</td>
-              <td>{user.gender}</td>
-              <td>{user.ip_address}</td>
-              <td>
-                <button onClick={() => handleDelete(user.id)}>Delete</button>{" "}
-              </td>
+      {!flag1 && !flag2 ? (
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>ID</th>
+              <th>First_Name</th>
+              <th>Last_Name</th>
+              <th>Email</th>
+              <th>Gender</th>
+              <th>IP Address</th>
+              <th>DELETE</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      :<div></div>}
-      {flag1 ?<table>
-        <tbody>
-       <ul>
-        {deleteList }
-       </ul>
-        </tbody>
-      </table>
-      :<div></div>}
-      {flag2 ? <table>
-        <tbody>
-          <ul>
-            
-            {starredList}
-              
-            
-          </ul>
-        </tbody>
-      </table>:<div></div>}
+          </thead>
+
+          <tbody>
+            {searchedUserData.map((user, index) => (
+              <tr key={index}>
+                <td>
+                  <button id="btn" onClick={() => handleStar(user.id)}>
+                    <StarButton />
+                  </button>
+                </td>
+                <td>{user.id}</td>
+                <td>{user.first_name}</td>
+                <td>{user.last_name}</td>
+                <td>{user.email}</td>
+                <td>{user.gender}</td>
+                <td>{user.ip_address}</td>
+                <td>
+                  <button id="btn" onClick={() => handleDelete(user.id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : null}
+      {flag1 ? (
+        
+          
+            <ul>{deleteList}</ul>
+         
+        
+      ) : null}
+      {flag2 ? (
+        
+            <ul>{starredList}</ul>
+          
+      ) : null}
     </div>
   );
 }
