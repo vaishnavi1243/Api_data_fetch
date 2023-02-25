@@ -62,7 +62,7 @@ function App() {
   var x=0;
  const starClicked=()=>{
   x++;
-  setFlag1(x%2);
+  setFlag2(x%2);
  }
  const handleDelete = (id) => {
   const deletedUser = userData.find((user) => user.id === id);
@@ -83,7 +83,7 @@ const deleteList = trash.map((user) => (
  const deleteClicked=()=>
  {
   y++;
-  setFlag2(y%2);
+  setFlag1(y%2);
  }
   return (
     <div className="App">
@@ -106,7 +106,7 @@ const deleteList = trash.map((user) => (
           <div className="delete">
             {/* <button onClick={handleShowDeletedata}>Trash </button>
             {showDeletedata && <ul className="deletelist">{deleteList}</ul>} */}
-            <button onClick={deleteClicked}></button>
+            <button onClick={deleteClicked}>Trash</button>
           </div>
         </div>
       </header>
@@ -119,7 +119,7 @@ const deleteList = trash.map((user) => (
           onChange={handleSearch}
         />
       </div>
-     
+     {(!flag1 && !flag2)?
       <table>
         <thead>
           <tr>
@@ -156,6 +156,25 @@ const deleteList = trash.map((user) => (
           ))}
         </tbody>
       </table>
+      :<div></div>}
+      {flag1 ?<table>
+        <tbody>
+       <ul>
+        {deleteList }
+       </ul>
+        </tbody>
+      </table>
+      :<div></div>}
+      {flag2 ? <table>
+        <tbody>
+          <ul>
+            
+            {starredList}
+              
+            
+          </ul>
+        </tbody>
+      </table>:<div></div>}
     </div>
   );
 }
