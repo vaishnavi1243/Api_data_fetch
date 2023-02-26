@@ -1,4 +1,5 @@
 import "./App.css";
+
 import React, { useState, useEffect } from "react";
 import StarButton from "./Components/StarButton";
 import "./App.css";
@@ -66,27 +67,32 @@ function App() {
 
   const starredList = starred.map((user) => (
     <div class="hiddendata">
-    <ul key={user.id}>
-      {user.id} {user.first_name} {user.last_name} {user.email} {user.gender}{" "}
-      {user.ip_address}
-    </ul>
+      <ul key={user.id}>
+        {user.id} {user.first_name} {user.last_name} {user.email} {user.gender}{" "}
+        {user.ip_address}
+      </ul>
     </div>
   ));
 
   const deleteList = trash.map((user) => (
     <div class="hiddendata">
-    <li key={user.id}>
-      {user.id} {user.first_name} {user.last_name} {user.email} {user.gender}{" "}
-      {user.ip_address}
-    </li>
+      <ul key={user.id}>
+        {user.id} {user.first_name} {user.last_name} {user.email} {user.gender}{" "}
+        {user.ip_address}
+      </ul>
     </div>
   ));
-
+  const handleHomeClick = () => {
+    setFlag1(false);
+    setFlag2(false);
+  };
   return (
     <div className="App">
-      <h1 className="appname">User Data Table</h1>
+      
       <header className="header">
-        <button className="home" id="btn">HOME</button>
+      <button className="home" id="btn" onClick={handleHomeClick}>
+  HOME
+</button>
         <div className="filters" id="dropdown">
           <select value={filter} onChange={handleFilter}>
             <option value="All">All</option>
@@ -96,12 +102,17 @@ function App() {
         </div>
 
         <div>
-          <button id="btn" onClick={starClicked}>Starred</button>
+          <button id="btn" onClick={starClicked}>
+            Starred
+          </button>
         </div>
         <div className="delete">
-          <button id="btn" onClick={deleteClicked}>Trash</button>
+          <button id="btn" onClick={deleteClicked}>
+            Trash
+          </button>
         </div>
       </header>
+     
       <div className="search">
         <label>Search : </label>
         <input
@@ -130,7 +141,7 @@ function App() {
             {searchedUserData.map((user, index) => (
               <tr key={index}>
                 <td>
-                  <button id="btn" onClick={() => handleStar(user.id)}>
+                  <button id="btn_star_delete" onClick={() => handleStar(user.id)}>
                     <StarButton />
                   </button>
                 </td>
@@ -141,25 +152,17 @@ function App() {
                 <td>{user.gender}</td>
                 <td>{user.ip_address}</td>
                 <td>
-                  <button id="btn" onClick={() => handleDelete(user.id)}>Delete</button>
+                  <button id="btn_star_delete" onClick={() => handleDelete(user.id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       ) : null}
-      {flag1 ? (
-        
-          
-            <ul>{deleteList}</ul>
-         
-        
-      ) : null}
-      {flag2 ? (
-        
-            <ul>{starredList}</ul>
-          
-      ) : null}
+      {flag1 ? <ul>{deleteList}</ul> : null}
+      {flag2 ? <ul>{starredList}</ul> : null}
     </div>
   );
 }

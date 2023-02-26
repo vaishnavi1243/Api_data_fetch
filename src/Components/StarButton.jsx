@@ -10,7 +10,7 @@ const StarButton = () => {
   };
 
   return (
-    <button id="btn" onClick={handleStarClick}>
+    <button id="btn_star_delete" onClick={handleStarClick}>
 <FaStar color={isStarred ? 'gold' : 'gray'} />    </button>
   );
 };
