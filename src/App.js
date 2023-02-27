@@ -55,7 +55,15 @@ function App() {
 
   const handleStar = (id) => {
     const starredUser = userData.find((user) => user.id === id);
-    setStarred([...starred, starredUser]);
+    console.log(starredUser);
+    if (starred.find((user) => user.id === id)) {
+     
+      setStarred(starred.filter((user) => user.id !== id));
+    } else {
+     
+      setStarred([...starred, starredUser]);
+      console.log(starred);
+    }
   };
 
   const handleDelete = (id) => {
@@ -93,13 +101,7 @@ function App() {
       <button className="home" id="btn" onClick={handleHomeClick}>
   HOME
 </button>
-        <div className="filters" id="dropdown">
-          <select value={filter} onChange={handleFilter}>
-            <option value="All">All</option>
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
-          </select>
-        </div>
+        
 
         <div>
           <button id="btn" onClick={starClicked}>
@@ -121,7 +123,15 @@ function App() {
           value={searchText}
           onChange={handleSearch}
         />
-      </div>
+     
+      <div className="filters" id="dropdown">
+          <select className="select" value={filter} onChange={handleFilter}>
+            <option value="All">All</option>
+            <option value="Female">Female</option>
+            <option value="Male">Male</option>
+          </select>
+        </div>
+        </div>
       {!flag1 && !flag2 ? (
         <table>
           <thead>

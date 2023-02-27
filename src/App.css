@@ -12,10 +12,10 @@ table,th ,td{
   input {
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 10px;
     font-size: 16px;
     margin-bottom: 50px;
-     width:530px
+     width:450px
     
   }
   label
@@ -84,4 +84,14 @@ table,th ,td{
 {
   border: none;
   cursor: pointer;
+}
+
+.select
+{
+  width:100px;
+  height: 35px;
+  margin-bottom: 50px;
+  margin-left: 5px;
+  border-radius: 10px;
+  size: 100px;
 }
